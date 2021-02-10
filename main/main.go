@@ -17,6 +17,7 @@ var (
 	client *mongo.Client
 	err    error
 	ctx    context.Context
+	router *mux.Router
 )
 
 func main() {
@@ -30,7 +31,10 @@ func main() {
 		log.Fatal(err)
 	}
 	defer client.Disconnect(ctx)
-	router := mux.NewRouter()
+	api()
+}
+
+func api() {
 	router.HandleFunc("/posts", GetPosts).Methods("GET")
 	router.HandleFunc("/add", InsertPost).Methods("POST")
 	router.HandleFunc("/{id}", GetPost).Methods("GET")
